@@ -1,15 +1,14 @@
 const fs = require('fs');
+
 let isRunning = true;
 
-setTimeout(() => (isRunning = false), 100);
+setTimeout(() => isRunning = false, 7);
 process.nextTick(() => console.log('Next tick'));
 
 function setImmediatePromise() {
     return new Promise((resolve, reject) => {
         setImmediate(() => resolve());
-        // // with resolve() we stay on the same event loop iteration
-        // resolve()
-    });
+    })
 }
 
 async function whileLoop() {
