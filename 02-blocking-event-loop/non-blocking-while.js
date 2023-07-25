@@ -1,21 +1,21 @@
-const fs = require('fs');
+const fs = require("fs");
 
 let isRunning = true;
 
-setTimeout(() => isRunning = false, 7);
-process.nextTick(() => console.log('Next tick'));
+setTimeout(() => (isRunning = false), 7);
+process.nextTick(() => console.log("Next tick"));
 
 function setImmediatePromise() {
-    return new Promise((resolve, reject) => {
-        setImmediate(() => resolve());
-    })
+	return new Promise((resolve, reject) => {
+		setImmediate(() => resolve());
+	});
 }
 
 async function whileLoop() {
-    while (isRunning) {
-        console.log('While loop is running...');
-        await setImmediatePromise();
-    }
+	while (isRunning) {
+		console.log("While loop is running...");
+		await setImmediatePromise();
+	}
 }
 
-whileLoop().then(() => console.log('While loop ended'));
+whileLoop().then(() => console.log("While loop ended"));
