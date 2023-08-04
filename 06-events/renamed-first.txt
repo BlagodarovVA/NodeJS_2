@@ -1,2 +1,2 @@
 First file text
-One more line
+Вторая строка
