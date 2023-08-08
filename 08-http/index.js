@@ -32,6 +32,12 @@ const server = http.createServer((req, res) => {
 		console.log(`Запрос № ${count}: на \/json`);
 		return res.end(JSON.stringify(comments));
 	}
+
+	res.statusCode = 404;
+	res.setHeader('Content-Type', 'text/html');
+	count++;
+	console.log(`Запрос № ${count}: на 404`);
+	return res.end('<h1>404: Page not found</h1>');
 });
 
 server.listen(PORT, () => {
