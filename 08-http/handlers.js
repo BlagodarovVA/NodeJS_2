@@ -10,7 +10,7 @@ function getHTML(req, res) {
 	res.write('</div></body></html>');
 	count++;
 	console.log(`№ ${count}: Запрос ${req.method}: на ${req.url}`);
-	return res.end();
+	res.end();
 }
 
 function getText(req, res) {
@@ -18,7 +18,7 @@ function getText(req, res) {
 	res.setHeader('Content-Type', 'text/html');
 	count++;
 	console.log(`№ ${count}: Запрос ${req.method}: на ${req.url}`);
-	return res.end('This is plain text');
+	res.end('This is plain text');
 }
 
 function getComments(req, res) {
@@ -26,19 +26,30 @@ function getComments(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	count++;
 	console.log(`№ ${count}: Запрос ${req.method}: на ${req.url}`);
-	return res.end(JSON.stringify(comments));
+	res.end(JSON.stringify(comments));
 }
 
 function postComment(req, res) {
-	let commentJSON = '';
+	res.setHeader('Content-Type', 'text/html');
 
-	req.on('data', (chunk) => (commentJSON += chunk));
+	if (req.headers['content-type'] === 'application/json') {
+		let commentJSON = '';
 
-	req.on('end', () => {
-		comments.push(JSON.parse(commentJSON));
-		res.statusCode = 200;
-		res.end('Данные коммента были получены');
-	});
+		req.on('data', (chunk) => (commentJSON += chunk));
+		req.on('end', () => {
+			try {
+				comments.push(JSON.parse(commentJSON));
+				res.statusCode = 200;
+				res.end('Данные коммента были получены');
+			} catch (error) {
+				res.statusCode = 400;
+				res.end('Некорректный JSON');
+			}
+		});
+	} else {
+		res.statusCode = 400;
+		res.end('Данные должны быть в формате JSON');
+	}
 }
 
 function handleNotFound(req, res) {
@@ -46,7 +57,7 @@ function handleNotFound(req, res) {
 	res.setHeader('Content-Type', 'text/html');
 	count++;
 	console.log(`№ ${count}: Запрос ${req.method}: на 404`);
-	return res.end('<h1>404: Page not found</h1>');
+	res.end('<h1>404: Page not found</h1>');
 }
 
 module.exports = {
