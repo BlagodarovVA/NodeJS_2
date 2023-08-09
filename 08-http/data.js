@@ -1,7 +1,7 @@
 const comments = [
-    { id: 100, text: 'First comment', author: 'Bogdan' },
-    { id: 526, text: 'Second comment', author: 'Alice' },
-    { id: 724, text: 'Last comment', author: 'Bob' },
+	{ id: 100, text: 'First comment', author: 'Valery' },
+	{ id: 202, text: 'Second comment', author: 'Diana' },
+	{ id: 333, text: 'Last comment', author: 'Vasil' },
 ];
 
 module.exports = comments;
