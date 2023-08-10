@@ -1,4 +1,5 @@
 const fs = require('fs');
+const qs = require('querystring');
 const comments = require('./data');
 
 let count = 0;
@@ -13,6 +14,8 @@ function getHome(req, res) {
 		} else {
 			res.statusCode = 200;
 			res.setHeader('Content-Type', 'text/html');
+			count++;
+			console.log(`№ ${count}: Запрос ${req.method}: на ${req.url}`);
 			res.end(data);
 		}
 	});
@@ -47,7 +50,33 @@ function getComments(req, res) {
 
 function postComment(req, res) {
 	res.setHeader('Content-Type', 'text/html');
-	if (req.headers['content-type'] === 'application/json') {
+
+	if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+		let body = '';
+
+		req.on('data', (chunk) => {
+			body += chunk.toString();
+		});
+
+		req.on('end', () => {
+			try {
+				const comment = qs.parse(body);
+				comment.id = parseInt(comment.id);
+				comments.push(comment);
+				res.statusCode = 200;
+				res.setHeader('Content-Type', 'text/html');
+				res.write('<h1>INFO: Data was received</h1>');
+				res.write('<a href="/">Submit one more comment</a>');
+				count++;
+				console.log(`№ ${count}: Запрос ${req.method}: ${req.url}`);
+				res.end();
+			} catch (error) {
+				res.statusCode = 400;
+				res.end('Error: invalid Form data');
+				console.log('postComment: ', error);
+			}
+		});
+	} else if (req.headers['content-type'] === 'application/json') {
 		let commentJSON = '';
 
 		req.on('data', (chunk) => (commentJSON += chunk));
@@ -55,6 +84,8 @@ function postComment(req, res) {
 			try {
 				comments.push(JSON.parse(commentJSON));
 				res.statusCode = 200;
+				count++;
+				console.log(`№ ${count}: Запрос ${req.method}: ${req.url}`);
 				res.end('INFO: Data was received');
 			} catch (error) {
 				res.statusCode = 400;
@@ -63,7 +94,7 @@ function postComment(req, res) {
 		});
 	} else {
 		res.statusCode = 400;
-		res.end('Error: Data must be in JSON format');
+		res.end('Error: Data must be in JSON format or as form');
 	}
 }
 
