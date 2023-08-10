@@ -1,8 +1,22 @@
+const fs = require('fs');
 const comments = require('./data');
 
 let count = 0;
 
-function getHome(req, res) {}
+function getHome(req, res) {
+	fs.readFile('./files/comment-form.html', (err, data) => {
+		if (err) {
+			res.statusCode = 500;
+			res.setHeader('Content-Type', 'text/plain');
+			console.log('getHome: ', err);
+			res.end('Ошибка сервера при загрузке HTML файла');
+		} else {
+			res.statusCode = 200;
+			res.setHeader('Content-Type', 'text/html');
+			res.end(data);
+		}
+	});
+}
 
 function getHTML(req, res) {
 	res.statusCode = 200;
@@ -33,7 +47,6 @@ function getComments(req, res) {
 
 function postComment(req, res) {
 	res.setHeader('Content-Type', 'text/html');
-
 	if (req.headers['content-type'] === 'application/json') {
 		let commentJSON = '';
 
@@ -42,15 +55,15 @@ function postComment(req, res) {
 			try {
 				comments.push(JSON.parse(commentJSON));
 				res.statusCode = 200;
-				res.end('Данные коммента были получены');
+				res.end('INFO: Data was received');
 			} catch (error) {
 				res.statusCode = 400;
-				res.end('Некорректный JSON');
+				res.end('Error: invalid JSON');
 			}
 		});
 	} else {
 		res.statusCode = 400;
-		res.end('Данные должны быть в формате JSON');
+		res.end('Error: Data must be in JSON format');
 	}
 }
 
