@@ -4,12 +4,22 @@ import fs from 'fs';
 const upperCaseStream = new Transform({
 	transform: function (chunk, encoding, cb) {
 		const upperCased = chunk.toString().toUpperCase();
-		console.log(upperCased);
+		//console.log(upperCased);
 		cb(null, upperCased);
 	},
 });
 
-process.stdin.pipe(upperCaseStream).pipe(process.stdout);
+const reverseStream = new Transform({
+	transform: function (chunk, encoding, cb) {
+		const arrayOfChars = chunk.toString().split('');
+		const lastChar = arrayOfChars.pop();
+		let reversed = arrayOfChars.reverse().concat(lastChar).join('');
+		//console.log(reversed);
+		cb(null, reversed);
+	},
+});
+
+process.stdin.pipe(upperCaseStream).pipe(reverseStream).pipe(process.stdout);
 
 // // пайп в файл
 // const filePath = './files/stdin-dump.txt';
