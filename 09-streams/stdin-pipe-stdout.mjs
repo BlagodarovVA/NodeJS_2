@@ -13,7 +13,7 @@ const reverseStream = new Transform({
 	transform: function (chunk, encoding, cb) {
 		const arrayOfChars = chunk.toString().split('');
 		const lastChar = arrayOfChars.pop();
-		let reversed = arrayOfChars.reverse().concat(lastChar).join('');
+		const reversed = arrayOfChars.reverse().concat(lastChar).join('');
 		//console.log(reversed);
 		cb(null, reversed);
 	},
