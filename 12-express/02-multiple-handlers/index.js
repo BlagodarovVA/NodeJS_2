@@ -15,7 +15,7 @@ const secondHandler = (req, res) => {
 
 const siskiHandler = (req, res) => {
 	console.log('INFO: siskiHandler handler');
-	res.sendFile(__dirname + '/ClmC0rrUoAAAZnM.jpg');
+	res.sendFile(__dirname + '/2880x1800.jpg');
 };
 
 app.get('/', firstHandler, secondHandler);
