@@ -1,32 +1,18 @@
 const express = require('express');
+const commentsRouter = require('./routes/comments');
+const usersRouter = require('./routes/users');
 
 const app = express();
 const PORT = 5001;
 
 const getRootHandler = (req, res) => {
-	console.log('INFO: getRootHandler');
+	console.log('GET: getRootHandler');
 	res.sendFile(__dirname + '/tits.txt');
 };
 
-const getCommentsHandler = (req, res) => {
-	console.log('INFO: getCommentsHandler');
-	res.send('Get comments route');
-};
-
-const getCommentHandler = (req, res) => {
-	console.log('INFO: getCommentHandler');
-	res.send(`Get 1 comment route. CommentId ${req.params.commentId}`);
-};
-
-const postCommentsHandler = (req, res) => {
-	console.log('INFO: postCommentsHandler');
-	res.sendFile(__dirname + '/ClmC0rrUoAAAZnM.jpg');
-};
-
 app.get('/', getRootHandler);
-app.get('/comments', getCommentsHandler);
-app.post('/comments', postCommentsHandler);
-app.get('/comments/:commentId', getCommentHandler);
+app.use('/comments', commentsRouter);
+app.use('/users', usersRouter);
 
 app.listen(PORT, () => {
 	console.log(
