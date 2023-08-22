@@ -4,7 +4,7 @@ const getCommentsHandler = (req, res) => {
 };
 const get1CommentHandler = (req, res) => {
 	console.log('GET: getCommentHandler');
-	res.send(`Get 1 comment route. CommentId ${req.params.commentId}`);
+	res.send(`Get 1 comment route. CommentId '${req.params.commentId}'`);
 };
 const postCommentsHandler = (req, res) => {
 	console.log('POST: postCommentsHandler');
@@ -12,7 +12,7 @@ const postCommentsHandler = (req, res) => {
 };
 const delete1CommentHandler = (req, res) => {
 	console.log('DEL: deleteCommentHandler');
-	res.send(`Delete comment route. CommentId ${req.params.commentId}`);
+	res.send(`Delete comment route. CommentId '${req.params.commentId}'`);
 };
 
 module.exports = {

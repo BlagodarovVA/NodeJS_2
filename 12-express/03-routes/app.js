@@ -1,18 +1,11 @@
 const express = require('express');
-const commentsRouter = require('./routes/comments');
-const usersRouter = require('./routes/users');
+// при импорте из файла index его в пути импорта можно опускать
+const router = require('./routes');
 
 const app = express();
 const PORT = 5001;
 
-const getRootHandler = (req, res) => {
-	console.log('GET: getRootHandler');
-	res.sendFile(__dirname + '/tits.txt');
-};
-
-app.get('/', getRootHandler);
-app.use('/comments', commentsRouter);
-app.use('/users', usersRouter);
+app.use(router);
 
 app.listen(PORT, () => {
 	console.log(
