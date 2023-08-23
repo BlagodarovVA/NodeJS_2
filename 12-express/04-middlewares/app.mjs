@@ -1,18 +1,20 @@
 import express from 'express';
-import morgan from 'morgan';
 
 const app = express();
+const PORT = 5001;
 
-// logs info about request
-app.use(morgan('tiny'));
-// converts JSON to JS Object in POST, PUT, PATCH requests
-app.use(express.json());
-// convets form data to JS Object in POST, PUT, PATCH requests
-app.use(express.urlencoded({ extended: true }));
+const logger = (req, res, next) => {
+	console.log(req.method, req.path);
+	next();
+};
 
-app.use((req, res) => {
-    console.log(req.body);
-    return res.send('This is express server');
-});
+app.use(logger);
 
-app.listen(5000, () => console.log('server is listening at port 5000'));
+app.use((req, res) =>
+	res.send(`
+<h1>Привет</h1>
+<h1>Это express сервер...</h1>
+`)
+);
+
+app.listen(PORT, () => console.log(`Сервер слушает на порту ${PORT}`));
