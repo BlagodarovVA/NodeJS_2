@@ -3,23 +3,25 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 const app = express();
+const PORT = 5001;
 
-// logs info about request
-app.use(morgan('tiny'));
-// converts JSON to JS Object in POST, PUT, PATCH requests
+// логи запросов
+app.use(morgan('dev'));
+// конвертация JSON в бъект
 app.use(express.json());
-// convets form data to JS Object in POST, PUT, PATCH requests
+// конвертация данных формы в объект
 app.use(express.urlencoded({ extended: true }));
-// enable all CORS requests
+// разрешаем запросы с других серверов
 app.use(cors());
 
 app.use((req, res) => {
-    const personData = {
-        name: 'Bogdan',
-        isInstructor: true,
-    };
-    console.log(req.body);
-    return res.json(personData);
+	const personData = {
+		name: 'Valery',
+		isProgrammer: true,
+	};
+	console.log(req.body);
+	// конвертация объекта в JSON
+	return res.json(personData);
 });
 
-app.listen(5000, () => console.log('server is listening at port 5000'));
+app.listen(PORT, () => console.log(`Сервер слушает на порту ${PORT}`));
